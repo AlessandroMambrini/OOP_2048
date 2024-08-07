@@ -1,7 +1,6 @@
 package com.example.oop_2048;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -26,40 +25,48 @@ public class GameController {
     @FXML private Label label21;
     @FXML private Label label20;
     @FXML private Label label13;
-    @FXML private Button background;
+
     @FXML private Label current_score;
     @FXML private Label high_score;
-    @FXML private final int GRID_DIMENSION = 16;
     @FXML private final int NUM_COL = 4;
 
-    @FXML public Integer[] grid = new Integer[GRID_DIMENSION];
+    @FXML public Integer[][] grid = new Integer[NUM_COL][NUM_COL];
 
     @FXML
     public void initialize(){
         current_score.setText("0");
         high_score.setText("0");
-        for (int i = 0; i < GRID_DIMENSION; i++) {
-            grid[i] = 0;
-            write_label(i,grid[i]);
+        for (int i = 0; i < NUM_COL; i++) {
+            for (int j = 0; j < NUM_COL; j++) {
+                grid[i][j] = 0;
+                write_label(i,j,grid[i][j]);
+            }
         }
         init_number();
     }
     @FXML
     private void init_number() {
         Random random = new Random();
-        int first, second;
-        first = random.nextInt(0,GRID_DIMENSION);
+        int first_row, second_row, first_colum, second_column;
+        first_row = random.nextInt(0,NUM_COL);
+        first_colum = random.nextInt(0,NUM_COL);
         do {
-            second = random.nextInt(0,GRID_DIMENSION);
-        } while (first == second);
-        grid[first] = random.nextInt(1,3) * 2;
-        write_label(first,grid[first]);
-        grid[second] = random.nextInt(1,3) * 2;
-        write_label(second,grid[second]);
+            second_row = random.nextInt(0,NUM_COL);
+            second_column = random.nextInt(0,NUM_COL);
+        } while (first_row == second_row && first_colum == second_column);
+        /*first_row = 0;
+        first_colum = 0;
+        second_row = 1;
+        second_column = 0;*/
+        grid[first_row][first_colum] = random.nextInt(1,3) * 2;
+        write_label(first_row, first_colum, grid[first_row][first_colum]);
+        grid[second_row][second_column] = random.nextInt(1,3) * 2;
+        write_label(second_row, second_column,grid[second_row][second_column]);
     }
 
     @FXML
-    public Label grid_to_label (int cell){
+    public Label grid_to_label (int row, int col){
+        int cell = row * NUM_COL + col;
         return switch (cell){
             case 0 -> label00;
             case 1 -> label01;
@@ -82,13 +89,13 @@ public class GameController {
     }
 
     @FXML
-    private void  write_label(int cell, int value){
-        Label label = grid_to_label(cell);
+    private void  write_label(int row, int col, int value){
+        Label label = grid_to_label(row, col);
         if (value == 0){
             label.setText("");
         } else {
-        String string = value + "";
-        label.setText(string);
+            String string = value + "";
+            label.setText(string);
         }
     }
 
@@ -105,85 +112,90 @@ public class GameController {
                 break;
             case KeyCode.LEFT:
                 current_score.setText("Left");
+                movement_left();
                 break;
             case KeyCode.RIGHT:
                 current_score.setText("Right");
+                movement_right();
                 break;
+        }
+    }
+
+    private void movement_right() {
+        for (int j = NUM_COL - 2; j >= 0; j--) {
+            for (int i = NUM_COL - 1; i >= 0; i--) {
+                int counter = 0;
+                for (int k = 1; k <= NUM_COL - 1 - j; k++) {
+                    if (grid[i][j + k] == 0){
+                        counter++;
+                    }
+                }
+                if (counter > 0){
+                    grid[i][j + counter] = grid[i][j];
+                    grid[i][j] = 0;
+                    write_label(i, j, 0);
+                    write_label(i, j + counter, grid[i][j + counter]);
+                }
+            }
+        }
+    }
+
+    private void movement_left() {
+        for (int j = 1; j < NUM_COL; j++) {
+            for (int i = 0; i < NUM_COL; i++) {
+                int counter = 0;
+                for (int k = 1; k < j + 1; k++) {
+                    if (grid[i][j - k] == 0){
+                        counter++;
+                    }
+                }
+                if (counter > 0){
+                    grid[i][j - counter] = grid[i][j];
+                    grid[i][j] = 0;
+                    write_label(i, j, 0);
+                    write_label(i, j - counter, grid[i][j - counter]);
+                }
+            }
         }
     }
 
     private void movement_down() {
-        for (int i = GRID_DIMENSION - NUM_COL - 1; i >= 0; i--) {
-            if (i > (NUM_COL * 2) - 1 && grid[i + NUM_COL] == 0){
-                print_and_set_new_grid_for_down(i,1);
-            }
-            //--------------------------------------------------------------------------
-            if (i < NUM_COL * 2 && i >= NUM_COL){
+        for (int i = NUM_COL - 2; i >= 0; i--) {
+            for (int j = NUM_COL - 1; j >= 0; j--) {
                 int counter = 0;
-                for (int j = 1; j < 3; j++) {
-                    if (grid[i + NUM_COL * j] == 0){
+                for (int k = 1; k <= NUM_COL - 1 - i; k++) {
+                    if (grid[i + k][j] == 0){
                         counter++;
                     }
                 }
-                print_and_set_new_grid_for_down(i,counter);
-            }
-            //---------------------------------------------------------------------------
-            if (i < NUM_COL){
-                int counter = 0;
-                for (int j = 1; j < 4; j++) {
-                    if (grid[i + NUM_COL * j] == 0){
-                        counter++;
-                    }
+                if (counter > 0){
+                    grid[i + counter][j] = grid[i][j];
+                    grid[i][j] = 0;
+                    write_label(i, j, 0);
+                    write_label(i + counter, j, grid[i + counter][j]);
                 }
-                print_and_set_new_grid_for_down(i,counter);
             }
-        }
-    }
-
-    private void print_and_set_new_grid_for_down(int cell, int counter) {
-        if (counter != 0){
-            grid[cell + NUM_COL * counter] = grid[cell];
-            grid[cell] = 0;
-            write_label(cell, grid[cell]);
-            write_label(cell + NUM_COL * counter, grid[cell + NUM_COL * counter]);
         }
     }
 
     @FXML
     private void movement_up() {
-        for (int i = NUM_COL; i < GRID_DIMENSION; i++) {
-            if (i < NUM_COL * 2 && grid[i - NUM_COL] == 0){
-                print_and_set_new_grid_for_up(i,1);
-            }
-            //----------------------------------------------------------------------
-            if (i >= NUM_COL * 2 && i < NUM_COL * 3){
+        for (int i = 1; i < NUM_COL; i++) {
+            for (int j = 0; j < NUM_COL; j++) {
                 int counter = 0;
-                for (int j = 1; j < 3; j++) {
-                    if (grid[i - NUM_COL * j] == 0){
+                for (int k = 1; k < i + 1; k++) {
+                    if (grid[i - k][j] == 0){
                         counter++;
                     }
                 }
-                print_and_set_new_grid_for_up(i, counter);
-            }
-            //-------------------------------------------------------------------------
-            if (i >= NUM_COL * 3){
-                int counter = 0;
-                for (int j = 1; j < 4; j++) {
-                    if (grid[i - NUM_COL * j] == 0){
-                        counter++;
-                    }
+                if (counter > 0){
+                    grid[i - counter][j] = grid[i][j];
+                    grid[i][j] = 0;
+                    write_label(i, j, 0);
+                    write_label(i - counter, j, grid[i - counter][j]);
                 }
-                print_and_set_new_grid_for_up(i, counter);
             }
         }
     }
 
-    private void print_and_set_new_grid_for_up(int cell, int counter) {
-        if (counter != 0){
-            grid[cell - NUM_COL * counter] = grid[cell];
-            grid[cell] = 0;
-            write_label(cell, grid[cell]);
-            write_label(cell - NUM_COL * counter, grid[cell - NUM_COL * counter]);
-        }
-    }
 }
