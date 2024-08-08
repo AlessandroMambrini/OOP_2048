@@ -50,16 +50,12 @@ public class GameController {
     private void init_number() {
         Random random = new Random();
         int first_row, second_row, first_colum, second_column;
-        /*first_row = random.nextInt(0,NUM_COL);
+        first_row = random.nextInt(0,NUM_COL);
         first_colum = random.nextInt(0,NUM_COL);
         do {
             second_row = random.nextInt(0,NUM_COL);
             second_column = random.nextInt(0,NUM_COL);
-        } while (first_row == second_row && first_colum == second_column);*/
-        first_row = 0;
-        first_colum = 0;
-        second_row = 3;
-        second_column = 0;
+        } while (first_row == second_row && first_colum == second_column);
         grid[first_row][first_colum] = random.nextInt(1,3) * 2;
         write_label(first_row, first_colum);
         grid[second_row][second_column] = random.nextInt(1,3) * 2;
@@ -221,6 +217,23 @@ public class GameController {
                     grid[i][j] = 0;
                     write_label(i, j);
                     write_label(i + counter, j);
+                }
+            }
+        }
+        for (int i = NUM_COL - 2; i >= 0; i--) {
+            for (int j = NUM_COL - 1; j >= 0; j--) {
+                if (Objects.equals(grid[i][j], grid[i + 1][j])) {
+                    grid[i + 1][j] *= 2;
+                    write_label(i + 1, j);
+                    grid[i][j] = 0;
+                    write_label(i, j);
+                    for (int k = i; k > 0 ; k--) {
+                        grid[k][j] = grid[k - 1][j];
+                        grid[k - 1][j] = 0;
+                        write_label(k, j);
+                    }
+                    grid[0][j] = 0;
+                    write_label(0, j);
                 }
             }
         }
