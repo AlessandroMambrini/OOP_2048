@@ -5,10 +5,12 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class GameController {
 
+    @FXML private static final Integer WIN = 2048;
     @FXML private Label label00;
     @FXML private Label label33;
     @FXML private Label label01;
@@ -39,7 +41,7 @@ public class GameController {
         for (int i = 0; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
                 grid[i][j] = 0;
-                write_label(i,j,grid[i][j]);
+                write_label(i,j);
             }
         }
         init_number();
@@ -48,20 +50,20 @@ public class GameController {
     private void init_number() {
         Random random = new Random();
         int first_row, second_row, first_colum, second_column;
-        first_row = random.nextInt(0,NUM_COL);
+        /*first_row = random.nextInt(0,NUM_COL);
         first_colum = random.nextInt(0,NUM_COL);
         do {
             second_row = random.nextInt(0,NUM_COL);
             second_column = random.nextInt(0,NUM_COL);
-        } while (first_row == second_row && first_colum == second_column);
-        /*first_row = 0;
+        } while (first_row == second_row && first_colum == second_column);*/
+        first_row = 0;
         first_colum = 0;
-        second_row = 1;
-        second_column = 0;*/
+        second_row = 3;
+        second_column = 0;
         grid[first_row][first_colum] = random.nextInt(1,3) * 2;
-        write_label(first_row, first_colum, grid[first_row][first_colum]);
+        write_label(first_row, first_colum);
         grid[second_row][second_column] = random.nextInt(1,3) * 2;
-        write_label(second_row, second_column,grid[second_row][second_column]);
+        write_label(second_row, second_column);
     }
 
     @FXML
@@ -89,7 +91,8 @@ public class GameController {
     }
 
     @FXML
-    private void  write_label(int row, int col, int value){
+    private void  write_label(int row, int col){
+        int value = grid[row][col];
         Label label = grid_to_label(row, col);
         if (value == 0){
             label.setText("");
@@ -119,6 +122,34 @@ public class GameController {
                 movement_right();
                 break;
         }
+        check_win_or_loss();
+        add_number();
+    }
+
+    private void check_win_or_loss() {
+        boolean win = false;
+        for (int i = 0; i < NUM_COL; i++) {
+            for (int j = 0; j < NUM_COL; j++) {
+                if (Objects.equals(grid[i][j], WIN)) {
+                    win = true;
+                    break;
+                }
+            }
+        }
+        if (win){
+            high_score.setText("WIN");
+        }
+    }
+
+    private void add_number() {
+        Random random = new Random();
+        int row, col;
+        do {
+            row = random.nextInt(0, NUM_COL);
+            col = random.nextInt(0, NUM_COL);
+        } while (grid[row][col] != 0);
+        grid[row][col] = random.nextInt(1,3) * 2;
+        write_label(row, col);
     }
 
     private void movement_right() {
@@ -133,8 +164,8 @@ public class GameController {
                 if (counter > 0){
                     grid[i][j + counter] = grid[i][j];
                     grid[i][j] = 0;
-                    write_label(i, j, 0);
-                    write_label(i, j + counter, grid[i][j + counter]);
+                    write_label(i, j);
+                    write_label(i, j + counter);
                 }
             }
         }
@@ -152,8 +183,25 @@ public class GameController {
                 if (counter > 0){
                     grid[i][j - counter] = grid[i][j];
                     grid[i][j] = 0;
-                    write_label(i, j, 0);
-                    write_label(i, j - counter, grid[i][j - counter]);
+                    write_label(i, j);
+                    write_label(i, j - counter);
+                }
+            }
+        }
+        for (int j = 1; j < NUM_COL; j++) {
+            for (int i = 0; i < NUM_COL; i++) {
+                if (Objects.equals(grid[i][j - 1], grid[i][j])){
+                    grid[i][j - 1] *= 2;
+                    write_label(i, j - 1);
+                    grid[i][j] = 0;
+                    write_label(i, j);
+                    for (int k = j; k < NUM_COL - 1; k++) {
+                        grid[i][k] = grid[i][k + 1];
+                        grid[i][k + 1] = 0;
+                        write_label(i, k);
+                    }
+                    grid[i][NUM_COL - 1] = 0;
+                    write_label(i, NUM_COL - 1);
                 }
             }
         }
@@ -171,8 +219,8 @@ public class GameController {
                 if (counter > 0){
                     grid[i + counter][j] = grid[i][j];
                     grid[i][j] = 0;
-                    write_label(i, j, 0);
-                    write_label(i + counter, j, grid[i + counter][j]);
+                    write_label(i, j);
+                    write_label(i + counter, j);
                 }
             }
         }
@@ -188,14 +236,30 @@ public class GameController {
                         counter++;
                     }
                 }
-                if (counter > 0){
+                if (counter > 0) {
                     grid[i - counter][j] = grid[i][j];
                     grid[i][j] = 0;
-                    write_label(i, j, 0);
-                    write_label(i - counter, j, grid[i - counter][j]);
+                    write_label(i, j);
+                    write_label(i - counter, j);
+                }
+            }
+        }
+        for (int i = 1; i < NUM_COL; i++) {
+            for (int j = 0; j < NUM_COL; j++) {
+                if (Objects.equals(grid[i - 1][j], grid[i][j])){
+                    grid[i - 1][j] *= 2;
+                    write_label(i - 1, j);
+                    grid[i][j] = 0;
+                    write_label(i,j);
+                    for (int k = i; k < NUM_COL - 1; k++) {
+                        grid[k][j] = grid[k + 1][j];
+                        grid[k + 1][j] = 0;
+                        write_label(k, j);
+                    }
+                    grid[NUM_COL - 1][j] = 0;
+                    write_label(NUM_COL - 1, j);
                 }
             }
         }
     }
-
 }
