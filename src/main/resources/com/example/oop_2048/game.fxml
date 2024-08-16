@@ -69,67 +69,67 @@
                   <Insets bottom="50.0" left="75.0" right="75.0" top="50.0" />
                </GridPane.margin>
                <children>
-                  <Label fx:id="label00" text="Label">
+                  <Label fx:id="label00">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label33" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                  <Label fx:id="label33" GridPane.columnIndex="3" GridPane.rowIndex="3">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label01" text="Label" GridPane.columnIndex="1">
+                  <Label fx:id="label01" GridPane.columnIndex="1">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label12" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Label fx:id="label12" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label11" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Label fx:id="label11" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label10" text="Label" GridPane.rowIndex="1">
+                  <Label fx:id="label10" GridPane.rowIndex="1">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label03" text="Label" GridPane.columnIndex="3">
+                  <Label fx:id="label03" GridPane.columnIndex="3">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label02" text="Label" GridPane.columnIndex="2">
+                  <Label fx:id="label02" GridPane.columnIndex="2">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label32" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <Label fx:id="label32" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label31" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <Label fx:id="label31" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label30" text="Label" GridPane.rowIndex="3">
+                  <Label fx:id="label30" GridPane.rowIndex="3">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label23" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <Label fx:id="label23" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label22" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <Label fx:id="label22" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label21" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Label fx:id="label21" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label20" text="Label" GridPane.rowIndex="2">
+                  <Label fx:id="label20" GridPane.rowIndex="2">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>
-                  <Label fx:id="label13" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <Label fx:id="label13" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font></Label>

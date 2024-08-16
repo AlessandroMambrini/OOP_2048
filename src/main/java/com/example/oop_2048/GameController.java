@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -39,10 +40,7 @@ public class GameController {
         current_score.setText("0");
         high_score.setText("0");
         for (int i = 0; i < NUM_COL; i++) {
-            for (int j = 0; j < NUM_COL; j++) {
-                grid[i][j] = 0;
-                write_label(i,j);
-            }
+            Arrays.fill(grid[i],0);
         }
         init_number();
     }
@@ -127,13 +125,9 @@ public class GameController {
         for (int i = 0; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
                 if (Objects.equals(grid[i][j], WIN)) {
-                    win = true;
-                    break;
+                    high_score.setText("WIN");
                 }
             }
-        }
-        if (win){
-            high_score.setText("WIN");
         }
     }
 
