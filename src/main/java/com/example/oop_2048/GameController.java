@@ -165,6 +165,23 @@ public class GameController {
                 }
             }
         }
+        for (int j = NUM_COL - 2; j >= 0; j--) {
+            for (int i = NUM_COL - 1; i >= 0; i--) {
+                if (Objects.equals(grid[i][j], grid[i][j + 1])) {
+                    grid[i][j + 1] *= 2;
+                    write_label(i, j + 1);
+                    grid[i][j] = 0;
+                    write_label(i, j);
+                    for (int k = j; k > 0 ; k--) {
+                        grid[i][k] = grid[i][k - 1];
+                        grid[i][k - 1] = 0;
+                        write_label(i, k);
+                    }
+                    grid[i][0] = 0;
+                    write_label(i, 0);
+                }
+            }
+        }
     }
 
     private void movement_left() {
