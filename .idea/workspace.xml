@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="075e4650-0521-44d3-8172-b4f55bc83c6b" name="Changes" comment="14:59 16/08/2024">
+    <list default="true" id="075e4650-0521-44d3-8172-b4f55bc83c6b" name="Changes" comment="16:36 16/08/2024">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oop_2048/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oop_2048/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/oop_2048/game.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/oop_2048/game.fxml" afterDir="false" />
@@ -84,7 +84,7 @@
       <workItem from="1723801539439" duration="1968000" />
       <workItem from="1723810777849" duration="3289000" />
       <workItem from="1723816490416" duration="753000" />
-      <workItem from="1723817332600" duration="1404000" />
+      <workItem from="1723817332600" duration="4294000" />
     </task>
     <task id="LOCAL-00001" summary="21:37 - 7/8/2024">
       <option name="closed" value="true" />
@@ -134,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723814067584</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="16:36 16/08/2024">
+      <option name="closed" value="true" />
+      <created>1723819006278</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1723819006278</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +164,7 @@
     <MESSAGE value="23:12 - 7/8/2024" />
     <MESSAGE value="19:24 8/08/2024" />
     <MESSAGE value="14:59 16/08/2024" />
-    <option name="LAST_COMMIT_MESSAGE" value="14:59 16/08/2024" />
+    <MESSAGE value="16:36 16/08/2024" />
+    <option name="LAST_COMMIT_MESSAGE" value="16:36 16/08/2024" />
   </component>
 </project>

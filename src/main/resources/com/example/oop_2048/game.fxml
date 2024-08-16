@@ -7,146 +7,183 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oop_2048.GameController">
-   <children>
-      <Button alignment="CENTER" mnemonicParsing="false" onKeyPressed="#chosen_direction" opacity="0.0" prefHeight="700.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <GridPane layoutX="200.0" layoutY="305.0" prefHeight="700.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane minHeight="700.0" minWidth="600.0" prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oop_2048.GameController">
+    <Button fx:id="background" alignment="CENTER" mnemonicParsing="false" onKeyPressed="#chosen_direction" opacity="0.0" prefHeight="700.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    <GridPane layoutX="200.0" layoutY="305.0" prefHeight="700.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints />
-          <RowConstraints maxHeight="345.5999816894531" minHeight="10.0" prefHeight="171.99999084472654" vgrow="SOMETIMES" />
+            <RowConstraints />
+            <RowConstraints maxHeight="345.5999816894531" minHeight="10.0" prefHeight="171.99999084472654" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="528.8000091552734" minHeight="10.0" prefHeight="528.8000091552734" vgrow="SOMETIMES" />
         </rowConstraints>
-         <children>
-            <GridPane GridPane.rowIndex="1">
-              <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="350.0" />
+        <GridPane GridPane.rowIndex="1">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="350.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-              </columnConstraints>
-              <rowConstraints>
+            </columnConstraints>
+            <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label text="2048">
-                     <font>
-                        <Font name="Arial Bold" size="100.0" />
-                     </font>
-                  </Label>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fffdd0" height="93.0" stroke="BLACK" strokeType="INSIDE" width="93.0" GridPane.columnIndex="1" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fffdd0" height="93.0" stroke="BLACK" strokeType="INSIDE" width="93.0" GridPane.columnIndex="2" />
-                  <Label fx:id="current_score" text="0000." GridPane.columnIndex="1">
-                     <font>
-                        <Font name="Seven Segment" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="high_score" text="0000" GridPane.columnIndex="2">
-                     <font>
-                        <Font name="Seven Segment" size="16.0" />
-                     </font>
-                  </Label>
-               </children>
-            </GridPane>
-            <GridPane alignment="CENTER" gridLinesVisible="true" GridPane.rowIndex="2">
-              <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </rowConstraints>
+            <Label text="2048">
+                <font>
+                    <Font name="Arial Bold" size="100.0" />
+                </font>
+            </Label>
+         <GridPane gridLinesVisible="true" GridPane.columnIndex="1">
+           <columnConstraints>
+             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+           </rowConstraints>
+            <GridPane.margin>
+               <Insets bottom="40.0" left="30.0" right="30.0" top="40.0" />
+            </GridPane.margin>
+            <children>
+               <Label text="SCORE">
+                  <font>
+                     <Font name="System Bold" size="24.0" />
+                  </font>
+               </Label>
+               <Label fx:id="current_score" text="0000" GridPane.rowIndex="1">
+                  <font>
+                     <Font name="Seven Segment" size="24.0" />
+                  </font>
+               </Label>
+            </children>
+         </GridPane>
+         <GridPane gridLinesVisible="true" GridPane.columnIndex="2">
+           <columnConstraints>
+             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+           </rowConstraints>
+            <GridPane.margin>
+               <Insets bottom="40.0" left="30.0" right="30.0" top="40.0" />
+            </GridPane.margin>
+            <children>
+               <Label text="HIGH">
+                  <font>
+                     <Font name="System Bold" size="24.0" />
+                  </font>
+               </Label>
+               <Label fx:id="high_score" text="0000" GridPane.rowIndex="1">
+                  <font>
+                     <Font name="Seven Segment" size="24.0" />
+                  </font>
+               </Label>
+            </children>
+         </GridPane>
+        </GridPane>
+        <GridPane alignment="CENTER" gridLinesVisible="true" GridPane.rowIndex="2">
+            <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <GridPane.margin>
-                  <Insets bottom="50.0" left="75.0" right="75.0" top="50.0" />
-               </GridPane.margin>
-               <children>
-                  <Label fx:id="label00">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label33" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label01" GridPane.columnIndex="1">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label12" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label11" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label10" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label03" GridPane.columnIndex="3">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label02" GridPane.columnIndex="2">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label32" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label31" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label30" GridPane.rowIndex="3">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label23" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label22" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label21" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label20" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-                  <Label fx:id="label13" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Arial" size="36.0" />
-                     </font></Label>
-               </children>
-            </GridPane>
-         </children>
-      </GridPane>
-      <Label contentDisplay="CENTER" layoutX="328.0" layoutY="16.0" prefHeight="65.0" prefWidth="94.0" text="  SCORE" textAlignment="CENTER">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </Label>
-      <Label contentDisplay="CENTER" layoutX="478.0" layoutY="16.0" prefHeight="66.0" prefWidth="94.0" text="    HIGH" textAlignment="CENTER">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </Label>
-      <Button alignment="CENTER" mnemonicParsing="false" onAction="#start_a_new_game" text="New Game" textAlignment="CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-   </children>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <GridPane.margin>
+                <Insets bottom="50.0" left="75.0" right="75.0" top="50.0" />
+            </GridPane.margin>
+            <Label fx:id="label00">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label33" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label01" GridPane.columnIndex="1">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label12" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label11" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label10" GridPane.rowIndex="1">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label03" GridPane.columnIndex="3">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label02" GridPane.columnIndex="2">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label32" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label31" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label30" GridPane.rowIndex="3">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label23" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label22" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label21" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label20" GridPane.rowIndex="2">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+            <Label fx:id="label13" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                <font>
+                    <Font name="Arial" size="36.0" />
+                </font>
+            </Label>
+        </GridPane>
+    </GridPane>
+   <Label text="Press &quot;R / r&quot; to reset" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <font>
+         <Font name="Arial Bold" size="18.0" />
+      </font>
+   </Label>
 </AnchorPane>

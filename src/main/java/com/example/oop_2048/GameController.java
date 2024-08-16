@@ -109,28 +109,28 @@ public class GameController {
     public void chosen_direction(KeyEvent keyEvent) {
         switch (keyEvent.getCode()){
             case KeyCode.UP:
-                current_score.setText("Up");
                 movement_up();
                 break;
             case KeyCode.DOWN:
-                current_score.setText("Down");
                 movement_down();
                 break;
             case KeyCode.LEFT:
-                current_score.setText("Left");
                 movement_left();
                 break;
             case KeyCode.RIGHT:
-                current_score.setText("Right");
                 movement_right();
                 break;
+            case KeyCode.R:
+                start_a_new_game();
+            default:
+                return;
         }
         check_win_or_loss();
         add_number();
     }
 
     private void check_win_or_loss() {
-        boolean win = false, is_a_zero = true, end = true;
+        boolean is_a_zero = true, end = true;
         for (int i = 0; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
                 if (Objects.equals(grid[i][j], WIN)) {
@@ -156,6 +156,7 @@ public class GameController {
                 alert.setHeaderText("No more moves are possible");
                 alert.setContentText("Please start a new game");
                 alert.showAndWait();
+                start_a_new_game();
             }
         }
     }
@@ -193,6 +194,7 @@ public class GameController {
                 if (Objects.equals(grid[i][j], grid[i][j + 1])) {
                     grid[i][j + 1] *= 2;
                     write_label(i, j + 1);
+                    update_current_score(grid[i][j + 1]);
                     grid[i][j] = 0;
                     write_label(i, j);
                     for (int k = j; k > 0 ; k--) {
@@ -229,6 +231,7 @@ public class GameController {
                 if (Objects.equals(grid[i][j - 1], grid[i][j])){
                     grid[i][j - 1] *= 2;
                     write_label(i, j - 1);
+                    update_current_score(grid[i][j - 1]);
                     grid[i][j] = 0;
                     write_label(i, j);
                     for (int k = j; k < NUM_COL - 1; k++) {
@@ -265,6 +268,7 @@ public class GameController {
                 if (Objects.equals(grid[i][j], grid[i + 1][j])) {
                     grid[i + 1][j] *= 2;
                     write_label(i + 1, j);
+                    update_current_score(grid[i + 1][j]);
                     grid[i][j] = 0;
                     write_label(i, j);
                     for (int k = i; k > 0 ; k--) {
@@ -302,6 +306,7 @@ public class GameController {
                 if (Objects.equals(grid[i - 1][j], grid[i][j])){
                     grid[i - 1][j] *= 2;
                     write_label(i - 1, j);
+                    update_current_score(grid[i - 1][j]);
                     grid[i][j] = 0;
                     write_label(i,j);
                     for (int k = i; k < NUM_COL - 1; k++) {
@@ -318,9 +323,9 @@ public class GameController {
 
     @FXML
     private void start_a_new_game() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("New game");
-        alert.setHeaderText("This action isn't undoable");
+        alert.setHeaderText("A new game will start");
         alert.showAndWait();
         if (Integer.parseInt(current_score.getText()) > Integer.parseInt(high_score.getText())){
             high_score.setText(current_score.getText());
@@ -328,5 +333,10 @@ public class GameController {
         current_score.setText("0");
         reset_grid();
         init_number();
+    }
+
+    @FXML
+    private void update_current_score(int points){
+        current_score.setText(Integer.parseInt(current_score.getText()) + points + "");
     }
 }
