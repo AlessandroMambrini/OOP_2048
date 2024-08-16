@@ -50,6 +50,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/mambr/IdeaProjects/address&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -81,7 +82,9 @@
       <workItem from="1723134341131" duration="2403000" />
       <workItem from="1723136864172" duration="1069000" />
       <workItem from="1723801539439" duration="1968000" />
-      <workItem from="1723810777849" duration="2951000" />
+      <workItem from="1723810777849" duration="3289000" />
+      <workItem from="1723816490416" duration="753000" />
+      <workItem from="1723817332600" duration="1404000" />
     </task>
     <task id="LOCAL-00001" summary="21:37 - 7/8/2024">
       <option name="closed" value="true" />
@@ -123,7 +126,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723813207019</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="14:59 16/08/2024">
+      <option name="closed" value="true" />
+      <created>1723814067584</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1723814067584</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

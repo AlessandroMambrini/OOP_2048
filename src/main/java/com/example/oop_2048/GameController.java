@@ -1,17 +1,17 @@
 package com.example.oop_2048;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
 public class GameController {
 
-    @FXML private static final Integer WIN = 2048;
+    @FXML private static final int WIN = 2048;
     @FXML private Label label00;
     @FXML private Label label33;
     @FXML private Label label01;
@@ -39,11 +39,20 @@ public class GameController {
     public void initialize(){
         current_score.setText("0");
         high_score.setText("0");
-        for (int i = 0; i < NUM_COL; i++) {
-            Arrays.fill(grid[i],0);
-        }
+        reset_grid();
         init_number();
     }
+
+    @FXML
+    private void reset_grid() {
+        for (int i = 0; i < NUM_COL; i++) {
+            for (int j = 0; j < NUM_COL; j++) {
+                grid[i][j] = 0;
+                write_label(i, j);
+            }
+        }
+    }
+
     @FXML
     private void init_number() {
         Random random = new Random();
@@ -121,12 +130,32 @@ public class GameController {
     }
 
     private void check_win_or_loss() {
-        boolean win = false;
+        boolean win = false, is_a_zero = true, end = true;
         for (int i = 0; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
                 if (Objects.equals(grid[i][j], WIN)) {
                     high_score.setText("WIN");
                 }
+                if (grid[i][j] == 0){
+                    is_a_zero = false;
+                }
+            }
+        }
+        if (is_a_zero){
+            for (int i = 1; i < NUM_COL - 1; i++) {
+                for (int j = 0; j < NUM_COL; j++) {
+                    if (Objects.equals(grid[i][j], grid[i - 1][j]) || Objects.equals(grid[i][j], grid[i + 1][j])) {
+                        end = false;
+                        break;
+                    }
+                }
+            }
+            if (end){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("YOU LOST");
+                alert.setHeaderText("No more moves are possible");
+                alert.setContentText("Please start a new game");
+                alert.showAndWait();
             }
         }
     }
@@ -285,5 +314,19 @@ public class GameController {
                 }
             }
         }
+    }
+
+    @FXML
+    private void start_a_new_game() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("New game");
+        alert.setHeaderText("This action isn't undoable");
+        alert.showAndWait();
+        if (Integer.parseInt(current_score.getText()) > Integer.parseInt(high_score.getText())){
+            high_score.setText(current_score.getText());
+        }
+        current_score.setText("0");
+        reset_grid();
+        init_number();
     }
 }
