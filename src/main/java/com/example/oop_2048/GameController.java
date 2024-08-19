@@ -32,6 +32,7 @@ public class GameController {
     @FXML private Label current_score;
     @FXML private Label high_score;
     @FXML private final int NUM_COL = 4;
+    @FXML private Label[][] labels = {{label00,label01,label02,label03},{label10,label11,label12,label13},{label20,label21,label22,label23},{label30,label31,label32,label33}};
 
     @FXML public Integer[][] grid = new Integer[NUM_COL][NUM_COL];
 
