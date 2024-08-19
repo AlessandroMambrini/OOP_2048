@@ -9,6 +9,8 @@ import javafx.scene.input.KeyEvent;
 import java.util.Objects;
 import java.util.Random;
 
+import static java.lang.Integer.parseInt;
+
 public class GameController {
 
     @FXML private static final int WIN = 2048;
@@ -32,14 +34,16 @@ public class GameController {
     @FXML private Label current_score;
     @FXML private Label high_score;
     @FXML private final int NUM_COL = 4;
-    @FXML private Label[][] labels = {{label00,label01,label02,label03},{label10,label11,label12,label13},{label20,label21,label22,label23},{label30,label31,label32,label33}};
-
-    @FXML public Integer[][] grid = new Integer[NUM_COL][NUM_COL];
+    @FXML Label[][] labels = new Label[NUM_COL][NUM_COL];
 
     @FXML
     public void initialize(){
         current_score.setText("0");
         high_score.setText("0");
+        labels = new Label[][]{ {label00, label01, label02, label03},
+                                {label10, label11, label12, label13},
+                                {label20, label21, label22, label23},
+                                {label30, label31, label32, label33}};
         reset_grid();
         init_number();
     }
@@ -48,8 +52,7 @@ public class GameController {
     private void reset_grid() {
         for (int i = 0; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
-                grid[i][j] = 0;
-                write_label(i, j);
+                labels[i][j].setText("");
             }
         }
     }
@@ -64,46 +67,8 @@ public class GameController {
             second_row = random.nextInt(0,NUM_COL);
             second_column = random.nextInt(0,NUM_COL);
         } while (first_row == second_row && first_colum == second_column);
-        grid[first_row][first_colum] = random.nextInt(1,3) * 2;
-        write_label(first_row, first_colum);
-        grid[second_row][second_column] = random.nextInt(1,3) * 2;
-        write_label(second_row, second_column);
-    }
-
-    @FXML
-    public Label grid_to_label (int row, int col){
-        int cell = row * NUM_COL + col;
-        return switch (cell){
-            case 0 -> label00;
-            case 1 -> label01;
-            case 2 -> label02;
-            case 3 -> label03;
-            case 4 -> label10;
-            case 5 -> label11;
-            case 6 -> label12;
-            case 7 -> label13;
-            case 8 -> label20;
-            case 9 -> label21;
-            case 10 -> label22;
-            case 11 -> label23;
-            case 12 -> label30;
-            case 13 -> label31;
-            case 14 -> label32;
-            case 15 -> label33;
-            default -> throw new IllegalStateException("Unexpected value: " + cell);
-        };
-    }
-
-    @FXML
-    private void  write_label(int row, int col){
-        int value = grid[row][col];
-        Label label = grid_to_label(row, col);
-        if (value == 0){
-            label.setText("");
-        } else {
-            String string = value + "";
-            label.setText(string);
-        }
+        labels[first_row][first_colum].setText(random.nextInt(1,3) * 2 + "");
+        labels[second_row][second_column].setText(random.nextInt(1,3) * 2 + "");
     }
 
     @FXML
@@ -127,25 +92,23 @@ public class GameController {
                 return;
         }
         check_win_or_loss();
-        add_number();
     }
 
     private void check_win_or_loss() {
         boolean is_a_zero = true, end = true;
         for (int i = 0; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
-                if (Objects.equals(grid[i][j], WIN)) {
-                    high_score.setText("WIN");
-                }
-                if (grid[i][j] == 0){
+                if (Objects.equals(labels[i][j].getText(), "")){
                     is_a_zero = false;
+                } else if (Objects.equals(Integer.parseInt(labels[i][j].getText()), WIN)) {
+                    high_score.setText("WIN");
                 }
             }
         }
         if (is_a_zero){
             for (int i = 1; i < NUM_COL - 1; i++) {
                 for (int j = 0; j < NUM_COL; j++) {
-                    if (Objects.equals(grid[i][j], grid[i - 1][j]) || Objects.equals(grid[i][j], grid[i + 1][j])) {
+                    if (Objects.equals(labels[i][j].getText(), labels[i - 1][j].getText()) || Objects.equals(labels[i][j].getText(), labels[i + 1][j].getText())) {
                         end = false;
                         break;
                     }
@@ -159,6 +122,8 @@ public class GameController {
                 alert.showAndWait();
                 start_a_new_game();
             }
+        } else {
+            add_number();
         }
     }
 
@@ -168,9 +133,8 @@ public class GameController {
         do {
             row = random.nextInt(0, NUM_COL);
             col = random.nextInt(0, NUM_COL);
-        } while (grid[row][col] != 0);
-        grid[row][col] = random.nextInt(1,3) * 2;
-        write_label(row, col);
+        } while (!Objects.equals(labels[row][col].getText(), ""));
+        labels[row][col].setText(random.nextInt(1,3) * 2 + "");
     }
 
     private void movement_right() {
@@ -178,33 +142,29 @@ public class GameController {
             for (int i = NUM_COL - 1; i >= 0; i--) {
                 int counter = 0;
                 for (int k = 1; k <= NUM_COL - 1 - j; k++) {
-                    if (grid[i][j + k] == 0){
+                    if (Objects.equals(labels[i][j + k].getText(), "")){
                         counter++;
                     }
                 }
                 if (counter > 0){
-                    grid[i][j + counter] = grid[i][j];
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    write_label(i, j + counter);
+                    labels[i][j + counter].setText(labels[i][j].getText());
+                    labels[i][j].setText("");
                 }
             }
         }
         for (int j = NUM_COL - 2; j >= 0; j--) {
             for (int i = NUM_COL - 1; i >= 0; i--) {
-                if (Objects.equals(grid[i][j], grid[i][j + 1])) {
-                    grid[i][j + 1] *= 2;
-                    write_label(i, j + 1);
-                    update_current_score(grid[i][j + 1]);
-                    grid[i][j] = 0;
-                    write_label(i, j);
+                if (Objects.equals(labels[i][j].getText(), ""))
+                    continue;
+                if (Objects.equals(labels[i][j].getText(), labels[i][j + 1].getText())) {
+                    labels[i][j + 1].setText(Integer.parseInt(labels[i][j + 1].getText()) * 2 + "");
+                    update_current_score(Integer.parseInt(labels[i][j + 1].getText()));
+                    labels[i][j].setText("");
                     for (int k = j; k > 0 ; k--) {
-                        grid[i][k] = grid[i][k - 1];
-                        grid[i][k - 1] = 0;
-                        write_label(i, k);
+                        labels[i][k].setText(labels[i][k - 1].getText());
+                        labels[i][k - 1].setText("");
                     }
-                    grid[i][0] = 0;
-                    write_label(i, 0);
+                    labels[i][0].setText("");
                 }
             }
         }
@@ -215,33 +175,29 @@ public class GameController {
             for (int i = 0; i < NUM_COL; i++) {
                 int counter = 0;
                 for (int k = 1; k < j + 1; k++) {
-                    if (grid[i][j - k] == 0){
+                    if (Objects.equals(labels[i][j - k].getText(), "")){
                         counter++;
                     }
                 }
                 if (counter > 0){
-                    grid[i][j - counter] = grid[i][j];
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    write_label(i, j - counter);
+                    labels[i][j - counter].setText(labels[i][j].getText());
+                    labels[i][j].setText("");
                 }
             }
         }
         for (int j = 1; j < NUM_COL; j++) {
             for (int i = 0; i < NUM_COL; i++) {
-                if (Objects.equals(grid[i][j - 1], grid[i][j])){
-                    grid[i][j - 1] *= 2;
-                    write_label(i, j - 1);
-                    update_current_score(grid[i][j - 1]);
-                    grid[i][j] = 0;
-                    write_label(i, j);
+                if (Objects.equals(labels[i][j].getText(), ""))
+                    continue;
+                if (Objects.equals(labels[i][j - 1].getText(), labels[i][j].getText())){
+                    labels[i][j - 1].setText(Integer.parseInt(labels[i][j - 1].getText()) * 2 + "");
+                    update_current_score(Integer.parseInt(labels[i][j - 1].getText()));
+                    labels[i][j].setText("");
                     for (int k = j; k < NUM_COL - 1; k++) {
-                        grid[i][k] = grid[i][k + 1];
-                        grid[i][k + 1] = 0;
-                        write_label(i, k);
+                        labels[i][k].setText(labels[i][k + 1].getText());
+                        labels[i][k + 1].setText("");
                     }
-                    grid[i][NUM_COL - 1] = 0;
-                    write_label(i, NUM_COL - 1);
+                    labels[i][NUM_COL - 1].setText("");
                 }
             }
         }
@@ -252,33 +208,29 @@ public class GameController {
             for (int j = NUM_COL - 1; j >= 0; j--) {
                 int counter = 0;
                 for (int k = 1; k <= NUM_COL - 1 - i; k++) {
-                    if (grid[i + k][j] == 0){
+                    if (Objects.equals(labels[i + k][j].getText(), "")){
                         counter++;
                     }
                 }
                 if (counter > 0){
-                    grid[i + counter][j] = grid[i][j];
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    write_label(i + counter, j);
+                    labels[i + counter][j].setText(labels[i][j].getText());
+                    labels[i][j].setText("");
                 }
             }
         }
         for (int i = NUM_COL - 2; i >= 0; i--) {
             for (int j = NUM_COL - 1; j >= 0; j--) {
-                if (Objects.equals(grid[i][j], grid[i + 1][j])) {
-                    grid[i + 1][j] *= 2;
-                    write_label(i + 1, j);
-                    update_current_score(grid[i + 1][j]);
-                    grid[i][j] = 0;
-                    write_label(i, j);
+                if (Objects.equals(labels[i][j].getText(), ""))
+                    continue;
+                if (Objects.equals(labels[i][j].getText(), labels[i + 1][j].getText())) {
+                    labels[i + 1][j].setText(Integer.parseInt(labels[i + 1][j].getText()) * 2 + "");
+                    update_current_score(Integer.parseInt(labels[i + 1][j].getText()));
+                    labels[i][j].setText("");
                     for (int k = i; k > 0 ; k--) {
-                        grid[k][j] = grid[k - 1][j];
-                        grid[k - 1][j] = 0;
-                        write_label(k, j);
+                        labels[k][j].setText(labels[k - 1][j].getText());
+                        labels[k - 1][j].setText("");
                     }
-                    grid[0][j] = 0;
-                    write_label(0, j);
+                    labels[0][j].setText("");
                 }
             }
         }
@@ -290,33 +242,29 @@ public class GameController {
             for (int j = 0; j < NUM_COL; j++) {
                 int counter = 0;
                 for (int k = 1; k < i + 1; k++) {
-                    if (grid[i - k][j] == 0){
+                    if (Objects.equals(labels[i - k][j].getText(), "")){
                         counter++;
                     }
                 }
                 if (counter > 0) {
-                    grid[i - counter][j] = grid[i][j];
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    write_label(i - counter, j);
+                    labels[i - counter][j].setText(labels[i][j].getText());
+                    labels[i][j].setText("");
                 }
             }
         }
         for (int i = 1; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
-                if (Objects.equals(grid[i - 1][j], grid[i][j])){
-                    grid[i - 1][j] *= 2;
-                    write_label(i - 1, j);
-                    update_current_score(grid[i - 1][j]);
-                    grid[i][j] = 0;
-                    write_label(i,j);
+                if (Objects.equals(labels[i][j].getText(), ""))
+                    continue;
+                if (Objects.equals(labels[i - 1][j].getText(), labels[i][j].getText())){
+                    labels[i - 1][j].setText(Integer.parseInt(labels[i - 1][j].getText()) * 2 + "");
+                    update_current_score(Integer.parseInt(labels[i - 1][j].getText()));
+                    labels[i][j].setText("");
                     for (int k = i; k < NUM_COL - 1; k++) {
-                        grid[k][j] = grid[k + 1][j];
-                        grid[k + 1][j] = 0;
-                        write_label(k, j);
+                        labels[k][j].setText(labels[k + 1][j].getText());
+                        labels[k + 1][j].setText("");
                     }
-                    grid[NUM_COL - 1][j] = 0;
-                    write_label(NUM_COL - 1, j);
+                    labels[NUM_COL - 1][j].setText("");
                 }
             }
         }
@@ -328,7 +276,7 @@ public class GameController {
         alert.setTitle("New game");
         alert.setHeaderText("A new game will start");
         alert.showAndWait();
-        if (Integer.parseInt(current_score.getText()) > Integer.parseInt(high_score.getText())){
+        if (parseInt(current_score.getText()) > parseInt(high_score.getText())){
             high_score.setText(current_score.getText());
         }
         current_score.setText("0");
@@ -338,6 +286,6 @@ public class GameController {
 
     @FXML
     private void update_current_score(int points){
-        current_score.setText(Integer.parseInt(current_score.getText()) + points + "");
+        current_score.setText(parseInt(current_score.getText()) + points + "");
     }
 }
