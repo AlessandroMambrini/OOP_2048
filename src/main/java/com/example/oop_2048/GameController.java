@@ -59,7 +59,7 @@ public class GameController {
 
     @FXML
     private void init_number() {
-        Random random = new Random();
+        /*Random random = new Random();
         int first_row, second_row, first_colum, second_column;
         first_row = random.nextInt(0,NUM_COL);
         first_colum = random.nextInt(0,NUM_COL);
@@ -68,7 +68,9 @@ public class GameController {
             second_column = random.nextInt(0,NUM_COL);
         } while (first_row == second_row && first_colum == second_column);
         labels[first_row][first_colum].setText(random.nextInt(1,3) * 2 + "");
-        labels[second_row][second_column].setText(random.nextInt(1,3) * 2 + "");
+        labels[second_row][second_column].setText(random.nextInt(1,3) * 2 + "");*/
+        labels[3][0].setText("128");
+        labels[2][0].setText("128");
     }
 
     @FXML
@@ -122,9 +124,9 @@ public class GameController {
                 alert.showAndWait();
                 start_a_new_game();
             }
-        } else {
+        } /*else {
             add_number();
-        }
+        }*/
     }
 
     private void add_number() {
@@ -240,6 +242,8 @@ public class GameController {
     private void movement_up() {
         for (int i = 1; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
+                if (Objects.equals(labels[i][j].getText(), ""))
+                    continue;
                 int counter = 0;
                 for (int k = 1; k < i + 1; k++) {
                     if (Objects.equals(labels[i - k][j].getText(), "")){
