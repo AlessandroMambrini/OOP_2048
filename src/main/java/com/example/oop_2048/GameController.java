@@ -5,11 +5,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
 import static java.lang.Integer.parseInt;
+import static javafx.scene.control.ButtonType.OK;
 
 public class GameController {
 
@@ -34,7 +38,8 @@ public class GameController {
     @FXML private Label current_score;
     @FXML private Label high_score;
     @FXML private final int NUM_COL = 4;
-    @FXML Label[][] labels = new Label[NUM_COL][NUM_COL];
+    @FXML private Label[][] labels = new Label[NUM_COL][NUM_COL];
+    private HashMap<Integer, Color> colors = new HashMap<>();
 
     @FXML
     public void initialize(){
@@ -45,6 +50,18 @@ public class GameController {
                                 {label20, label21, label22, label23},
                                 {label30, label31, label32, label33}};
         reset_grid();
+        colors.put(0, Color.WHITE);
+        colors.put(2, Color.rgb(238,199,107));
+        colors.put(4, Color.rgb(240,190,41));
+        colors.put(8, Color.rgb(192,152,43));
+        colors.put(16, Color.rgb(234,133,83));
+        colors.put(32, Color.rgb(228,104,40));
+        colors.put(64, Color.rgb(183,84,32));
+        colors.put(128, Color.rgb(229,74,80));
+        colors.put(256, Color.rgb(215,14,23));
+        colors.put(512, Color.rgb(172,25,23));
+        colors.put(1024, Color.rgb(83,0,112));
+        colors.put(2048, Color.rgb(40,1,52));
         init_number();
     }
 
@@ -59,7 +76,7 @@ public class GameController {
 
     @FXML
     private void init_number() {
-        /*Random random = new Random();
+        Random random = new Random();
         int first_row, second_row, first_colum, second_column;
         first_row = random.nextInt(0,NUM_COL);
         first_colum = random.nextInt(0,NUM_COL);
@@ -68,9 +85,20 @@ public class GameController {
             second_column = random.nextInt(0,NUM_COL);
         } while (first_row == second_row && first_colum == second_column);
         labels[first_row][first_colum].setText(random.nextInt(1,3) * 2 + "");
-        labels[second_row][second_column].setText(random.nextInt(1,3) * 2 + "");*/
-        labels[3][0].setText("128");
-        labels[2][0].setText("128");
+        labels[second_row][second_column].setText(random.nextInt(1,3) * 2 + "");
+        assign_colors();
+    }
+
+    private void assign_colors() {
+        for (int i = 0; i < NUM_COL; i++) {
+            for (int j = 0; j < NUM_COL; j++) {
+                int value = 0;
+                if (!Objects.equals(labels[i][j].getText(), "")){
+                    value = Integer.parseInt(labels[i][j].getText());
+                }
+                labels[i][j].setBackground(Background.fill(colors.get(value)));
+            }
+        }
     }
 
     @FXML
@@ -94,6 +122,7 @@ public class GameController {
                 return;
         }
         check_win_or_loss();
+        assign_colors();
     }
 
     private void check_win_or_loss() {
@@ -124,9 +153,9 @@ public class GameController {
                 alert.showAndWait();
                 start_a_new_game();
             }
-        } /*else {
+        } else {
             add_number();
-        }*/
+        }
     }
 
     private void add_number() {
@@ -276,16 +305,19 @@ public class GameController {
 
     @FXML
     private void start_a_new_game() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("New game");
         alert.setHeaderText("A new game will start");
-        alert.showAndWait();
-        if (parseInt(current_score.getText()) > parseInt(high_score.getText())){
-            high_score.setText(current_score.getText());
-        }
-        current_score.setText("0");
-        reset_grid();
-        init_number();
+        alert.showAndWait().ifPresent(result -> {
+            if(result == OK){
+                if (parseInt(current_score.getText()) > parseInt(high_score.getText())){
+                    high_score.setText(current_score.getText());
+                }
+                current_score.setText("0");
+                reset_grid();
+                init_number();
+            }
+        });
     }
 
     @FXML
