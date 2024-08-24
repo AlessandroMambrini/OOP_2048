@@ -38,8 +38,8 @@ public class GameController {
     @FXML private Label current_score;
     @FXML private Label high_score;
     @FXML private final int NUM_COL = 4;
-    @FXML private Label[][] labels = new Label[NUM_COL][NUM_COL];
-    private HashMap<Integer, Color> colors = new HashMap<>();
+    private Label[][] labels = new Label[NUM_COL][NUM_COL];
+    private final HashMap<Integer, Color> colors = new HashMap<>();
 
     @FXML
     public void initialize(){
@@ -50,7 +50,11 @@ public class GameController {
                                 {label20, label21, label22, label23},
                                 {label30, label31, label32, label33}};
         reset_grid();
-        colors.put(0, Color.WHITE);
+        load_colors();
+        init_number();
+    }
+
+    private void load_colors() {
         colors.put(2, Color.rgb(238,199,107));
         colors.put(4, Color.rgb(240,190,41));
         colors.put(8, Color.rgb(192,152,43));
@@ -62,7 +66,6 @@ public class GameController {
         colors.put(512, Color.rgb(172,25,23));
         colors.put(1024, Color.rgb(83,0,112));
         colors.put(2048, Color.rgb(40,1,52));
-        init_number();
     }
 
     @FXML
@@ -117,7 +120,7 @@ public class GameController {
                 movement_right();
                 break;
             case KeyCode.R:
-                start_a_new_game();
+                start_a_new_game(false);
             default:
                 return;
         }
@@ -132,7 +135,12 @@ public class GameController {
                 if (Objects.equals(labels[i][j].getText(), "")){
                     is_a_zero = false;
                 } else if (Objects.equals(Integer.parseInt(labels[i][j].getText()), WIN)) {
-                    high_score.setText("WIN");
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("YOU WON");
+                    alert.setHeaderText("Congratulations!!!");
+                    alert.setContentText("Please start a new game");
+                    alert.showAndWait();
+                    start_a_new_game(true);
                 }
             }
         }
@@ -151,7 +159,7 @@ public class GameController {
                 alert.setHeaderText("No more moves are possible");
                 alert.setContentText("Please start a new game");
                 alert.showAndWait();
-                start_a_new_game();
+                start_a_new_game(true);
             }
         } else {
             add_number();
@@ -304,8 +312,13 @@ public class GameController {
     }
 
     @FXML
-    private void start_a_new_game() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    private void start_a_new_game(boolean forced) {
+        Alert alert;
+        if (forced){
+            alert = new Alert(Alert.AlertType.INFORMATION);
+        } else {
+            alert = new Alert(Alert.AlertType.CONFIRMATION);
+        }
         alert.setTitle("New game");
         alert.setHeaderText("A new game will start");
         alert.showAndWait().ifPresent(result -> {
