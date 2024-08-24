@@ -16,7 +16,6 @@ import static java.lang.Integer.parseInt;
 import static javafx.scene.control.ButtonType.OK;
 
 public class GameController {
-
     @FXML private static final int WIN = 2048;
     @FXML private Label label00;
     @FXML private Label label33;
@@ -34,13 +33,11 @@ public class GameController {
     @FXML private Label label21;
     @FXML private Label label20;
     @FXML private Label label13;
-
     @FXML private Label current_score;
     @FXML private Label high_score;
     @FXML private final int NUM_COL = 4;
     private Label[][] labels = new Label[NUM_COL][NUM_COL];
     private final HashMap<Integer, Color> colors = new HashMap<>();
-
     @FXML
     public void initialize(){
         current_score.setText("0");
@@ -53,7 +50,6 @@ public class GameController {
         load_colors();
         init_number();
     }
-
     private void load_colors() {
         colors.put(2, Color.rgb(238,199,107));
         colors.put(4, Color.rgb(240,190,41));
@@ -67,7 +63,6 @@ public class GameController {
         colors.put(1024, Color.rgb(83,0,112));
         colors.put(2048, Color.rgb(40,1,52));
     }
-
     @FXML
     private void reset_grid() {
         for (int i = 0; i < NUM_COL; i++) {
@@ -76,7 +71,6 @@ public class GameController {
             }
         }
     }
-
     @FXML
     private void init_number() {
         Random random = new Random();
@@ -91,7 +85,6 @@ public class GameController {
         labels[second_row][second_column].setText(random.nextInt(1,3) * 2 + "");
         assign_colors();
     }
-
     private void assign_colors() {
         for (int i = 0; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
@@ -103,7 +96,6 @@ public class GameController {
             }
         }
     }
-
     @FXML
     public void chosen_direction(KeyEvent keyEvent) {
         switch (keyEvent.getCode()){
@@ -127,7 +119,6 @@ public class GameController {
         check_win_or_loss();
         assign_colors();
     }
-
     private void check_win_or_loss() {
         boolean is_a_zero = true, end = true;
         for (int i = 0; i < NUM_COL; i++) {
@@ -147,7 +138,7 @@ public class GameController {
         if (is_a_zero){
             for (int i = 1; i < NUM_COL - 1; i++) {
                 for (int j = 0; j < NUM_COL; j++) {
-                    if (Objects.equals(labels[i][j].getText(), labels[i - 1][j].getText()) || Objects.equals(labels[i][j].getText(), labels[i + 1][j].getText())) {
+                    if (Objects.equals(labels[i][j].getText(), labels[i - 1][j].getText()) || Objects.equals(labels[i][j].getText(), labels[i + 1][j].getText()) || Objects.equals(labels[j][i].getText(), labels[j][i - 1].getText()) || Objects.equals(labels[j][i].getText(), labels[j][i + 1].getText())) {
                         end = false;
                         break;
                     }
@@ -165,7 +156,6 @@ public class GameController {
             add_number();
         }
     }
-
     private void add_number() {
         Random random = new Random();
         int row, col;
@@ -175,7 +165,6 @@ public class GameController {
         } while (!Objects.equals(labels[row][col].getText(), ""));
         labels[row][col].setText(random.nextInt(1,3) * 2 + "");
     }
-
     private void movement_right() {
         for (int j = NUM_COL - 2; j >= 0; j--) {
             for (int i = NUM_COL - 1; i >= 0; i--) {
@@ -208,7 +197,6 @@ public class GameController {
             }
         }
     }
-
     private void movement_left() {
         for (int j = 1; j < NUM_COL; j++) {
             for (int i = 0; i < NUM_COL; i++) {
@@ -241,7 +229,6 @@ public class GameController {
             }
         }
     }
-
     private void movement_down() {
         for (int i = NUM_COL - 2; i >= 0; i--) {
             for (int j = NUM_COL - 1; j >= 0; j--) {
@@ -274,22 +261,23 @@ public class GameController {
             }
         }
     }
-
     @FXML
     private void movement_up() {
         for (int i = 1; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
-                if (Objects.equals(labels[i][j].getText(), ""))
-                    continue;
-                int counter = 0;
-                for (int k = 1; k < i + 1; k++) {
-                    if (Objects.equals(labels[i - k][j].getText(), "")){
-                        counter++;
+                if (!Objects.equals(labels[i][j].getText(), "")){
+                    int counter = 0;
+                    for (int k = 1; k < i + 1; k++) {
+                        if (Objects.equals(labels[i - k][j].getText(), "")){
+                            counter++;
+                        } else {
+                            break;
+                        }
                     }
-                }
-                if (counter > 0) {
-                    labels[i - counter][j].setText(labels[i][j].getText());
-                    labels[i][j].setText("");
+                    if (counter > 0) {
+                        labels[i - counter][j].setText(labels[i][j].getText());
+                        labels[i][j].setText("");
+                    }
                 }
             }
         }
@@ -310,7 +298,6 @@ public class GameController {
             }
         }
     }
-
     @FXML
     private void start_a_new_game(boolean forced) {
         Alert alert;
@@ -332,7 +319,6 @@ public class GameController {
             }
         });
     }
-
     @FXML
     private void update_current_score(int points){
         current_score.setText(parseInt(current_score.getText()) + points + "");
