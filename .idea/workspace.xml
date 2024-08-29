@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="075e4650-0521-44d3-8172-b4f55bc83c6b" name="Changes" comment="17:54 24/08/2024">
+    <list default="true" id="075e4650-0521-44d3-8172-b4f55bc83c6b" name="Changes" comment="DALLA SARDEGNA, IL PROGETTO RISULTA TERMINATO">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oop_2048/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oop_2048/GameController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +91,9 @@
       <workItem from="1723817332600" duration="4382000" />
       <workItem from="1723829757766" duration="41000" />
       <workItem from="1724092144677" duration="7580000" />
-      <workItem from="1724513563776" duration="5209000" />
+      <workItem from="1724513563776" duration="5371000" />
+      <workItem from="1724519472205" duration="26000" />
+      <workItem from="1724519521211" duration="54000" />
     </task>
     <task id="LOCAL-00001" summary="21:37 - 7/8/2024">
       <option name="closed" value="true" />
@@ -198,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724514852564</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="DALLA SARDEGNA, IL PROGETTO RISULTA TERMINATO">
+      <option name="closed" value="true" />
+      <created>1724518836026</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1724518836026</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,6 +244,7 @@
     <MESSAGE value="21:56 22/08/2024" />
     <MESSAGE value="17:52 24/08/2024" />
     <MESSAGE value="17:54 24/08/2024" />
-    <option name="LAST_COMMIT_MESSAGE" value="17:54 24/08/2024" />
+    <MESSAGE value="DALLA SARDEGNA, IL PROGETTO RISULTA TERMINATO" />
+    <option name="LAST_COMMIT_MESSAGE" value="DALLA SARDEGNA, IL PROGETTO RISULTA TERMINATO" />
   </component>
 </project>
