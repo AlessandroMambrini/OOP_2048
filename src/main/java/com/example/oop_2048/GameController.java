@@ -186,30 +186,26 @@ public class GameController {
         for (int j = NUM_COL - 2; j >= 0; j--) {
             for (int i = NUM_COL - 1; i >= 0; i--) {
                 int counter = 0;
-                for (int k = 1; k <= NUM_COL - 1 - j; k++) {
-                    if (Objects.equals(labels[i][j + k].getText(), "")){
-                        counter++;
+                if (!labels[i][j].getText().isEmpty()) {
+                    for (int k = 1; k <= NUM_COL - 1 - j; k++) {
+                        if (Objects.equals(labels[i][j + k].getText(), "")){
+                            counter++;
+                        }
+                    }
+                    if (counter > 0){
+                        labels[i][j + counter].setText(labels[i][j].getText());
+                        labels[i][j].setText("");
                     }
                 }
-                if (counter > 0){
-                    labels[i][j + counter].setText(labels[i][j].getText());
-                    labels[i][j].setText("");
-                }
-            }
-        }
-        for (int j = NUM_COL - 2; j >= 0; j--) {
-            for (int i = NUM_COL - 1; i >= 0; i--) {
-                if (Objects.equals(labels[i][j].getText(), ""))
-                    continue;
-                if (Objects.equals(labels[i][j].getText(), labels[i][j + 1].getText())) {
-                    labels[i][j + 1].setText(Integer.parseInt(labels[i][j + 1].getText()) * 2 + "");
-                    update_current_score(Integer.parseInt(labels[i][j + 1].getText()));
-                    labels[i][j].setText("");
-                    for (int k = j; k > 0 ; k--) {
-                        labels[i][k].setText(labels[i][k - 1].getText());
-                        labels[i][k - 1].setText("");
+                for (int k = NUM_COL - 1; k > 0; k--) {
+                    if (k - counter - 1 <= 0){
+                        counter = 0;
                     }
-                    labels[i][0].setText("");
+                    if (!labels[i][k].getText().isEmpty() && labels[i][k].getText().equals(labels[i][k - counter - 1].getText())){
+                        labels[i][k].setText(Integer.parseInt(labels[i][k - counter - 1].getText()) * 2 + "");
+                        update_current_score(Integer.parseInt(labels[i][k].getText()));
+                        labels[i][k - counter - 1].setText("");
+                    }
                 }
             }
         }
@@ -218,30 +214,25 @@ public class GameController {
         for (int j = 1; j < NUM_COL; j++) {
             for (int i = 0; i < NUM_COL; i++) {
                 int counter = 0;
-                for (int k = 1; k < j + 1; k++) {
-                    if (Objects.equals(labels[i][j - k].getText(), "")){
-                        counter++;
+                if (!labels[i][j].getText().isEmpty()) {
+                    for (int k = 1; k < j + 1; k++) {
+                        if (Objects.equals(labels[i][j - k].getText(), "")){
+                            counter++;
+                        }
+                    }
+                    if (counter > 0){
+                        labels[i][j - counter].setText(labels[i][j].getText());
+                        labels[i][j].setText("");
                     }
                 }
-                if (counter > 0){
-                    labels[i][j - counter].setText(labels[i][j].getText());
-                    labels[i][j].setText("");
-                }
-            }
-        }
-        for (int j = 1; j < NUM_COL; j++) {
-            for (int i = 0; i < NUM_COL; i++) {
-                if (Objects.equals(labels[i][j].getText(), ""))
-                    continue;
-                if (Objects.equals(labels[i][j - 1].getText(), labels[i][j].getText())){
-                    labels[i][j - 1].setText(Integer.parseInt(labels[i][j - 1].getText()) * 2 + "");
-                    update_current_score(Integer.parseInt(labels[i][j - 1].getText()));
-                    labels[i][j].setText("");
-                    for (int k = j; k < NUM_COL - 1; k++) {
-                        labels[i][k].setText(labels[i][k + 1].getText());
-                        labels[i][k + 1].setText("");
+                for (int k = 0; k < NUM_COL - 1; k++) {
+                    if (k + counter + 1 >= 3)
+                        counter = 0;
+                    if (!labels[i][k].getText().isEmpty() && labels[i][k].getText().equals(labels[i][k + counter + 1].getText())){
+                        labels[i][k].setText(Integer.parseInt(labels[i][k + counter + 1].getText()) * 2 + "");
+                        update_current_score(Integer.parseInt(labels[i][k].getText()));
+                        labels[i][k + counter + 1].setText("");
                     }
-                    labels[i][NUM_COL - 1].setText("");
                 }
             }
         }
@@ -250,30 +241,26 @@ public class GameController {
         for (int i = NUM_COL - 2; i >= 0; i--) {
             for (int j = NUM_COL - 1; j >= 0; j--) {
                 int counter = 0;
-                for (int k = 1; k <= NUM_COL - 1 - i; k++) {
-                    if (Objects.equals(labels[i + k][j].getText(), "")){
-                        counter++;
+                if (!labels[i][j].getText().isEmpty()) {
+                    for (int k = 1; k <= NUM_COL - 1 - i; k++) {
+                        if (Objects.equals(labels[i + k][j].getText(), "")){
+                            counter++;
+                        }
+                    }
+                    if (counter > 0){
+                        labels[i + counter][j].setText(labels[i][j].getText());
+                        labels[i][j].setText("");
                     }
                 }
-                if (counter > 0){
-                    labels[i + counter][j].setText(labels[i][j].getText());
-                    labels[i][j].setText("");
-                }
-            }
-        }
-        for (int i = NUM_COL - 2; i >= 0; i--) {
-            for (int j = NUM_COL - 1; j >= 0; j--) {
-                if (Objects.equals(labels[i][j].getText(), ""))
-                    continue;
-                if (Objects.equals(labels[i][j].getText(), labels[i + 1][j].getText())) {
-                    labels[i + 1][j].setText(Integer.parseInt(labels[i + 1][j].getText()) * 2 + "");
-                    update_current_score(Integer.parseInt(labels[i + 1][j].getText()));
-                    labels[i][j].setText("");
-                    for (int k = i; k > 0 ; k--) {
-                        labels[k][j].setText(labels[k - 1][j].getText());
-                        labels[k - 1][j].setText("");
+                for (int k = NUM_COL - 1; k > 0; k--) {
+                    if (k - counter - 1 <= 0){
+                        counter = 0;
                     }
-                    labels[0][j].setText("");
+                    if (!labels[k][j].getText().isEmpty() && labels[k][j].getText().equals(labels[k - counter - 1][j].getText())){
+                        labels[k][j].setText(Integer.parseInt(labels[k - counter - 1][j].getText()) * 2 + "");
+                        update_current_score(Integer.parseInt(labels[k][j].getText()));
+                        labels[k - counter - 1][j].setText("");
+                    }
                 }
             }
         }
@@ -282,10 +269,10 @@ public class GameController {
     private void movement_up() {
         for (int i = 1; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
-                if (!Objects.equals(labels[i][j].getText(), "")){
-                    int counter = 0;
+                int counter = 0;
+                if (!labels[i][j].getText().isEmpty()){
                     for (int k = 1; k < i + 1; k++) {
-                        if (Objects.equals(labels[i - k][j].getText(), "")){
+                        if (labels[i - k][j].getText().isEmpty()){
                             counter++;
                         } else {
                             break;
@@ -296,21 +283,14 @@ public class GameController {
                         labels[i][j].setText("");
                     }
                 }
-            }
-        }
-        for (int i = 1; i < NUM_COL; i++) {
-            for (int j = 0; j < NUM_COL; j++) {
-                if (Objects.equals(labels[i][j].getText(), ""))
-                    continue;
-                if (Objects.equals(labels[i - 1][j].getText(), labels[i][j].getText())){
-                    labels[i - 1][j].setText(Integer.parseInt(labels[i - 1][j].getText()) * 2 + "");
-                    update_current_score(Integer.parseInt(labels[i - 1][j].getText()));
-                    labels[i][j].setText("");
-                    for (int k = i; k < NUM_COL - 1; k++) {
-                        labels[k][j].setText(labels[k + 1][j].getText());
-                        labels[k + 1][j].setText("");
+                for (int k = 0; k < NUM_COL - 1; k++) {
+                    if (k + counter + 1 >= 3)
+                        counter = 0;
+                    if (!labels[k][j].getText().isEmpty() && labels[k][j].getText().equals(labels[k + counter + 1][j].getText())){
+                        labels[k][j].setText(Integer.parseInt(labels[k + counter + 1][j].getText()) * 2 + "");
+                        update_current_score(Integer.parseInt(labels[k][j].getText()));
+                        labels[k + counter + 1][j].setText("");
                     }
-                    labels[NUM_COL - 1][j].setText("");
                 }
             }
         }
@@ -351,5 +331,4 @@ public class GameController {
     private void update_current_score(int points){
         current_score.setText(parseInt(current_score.getText()) + points + "");
     }
-
 }
