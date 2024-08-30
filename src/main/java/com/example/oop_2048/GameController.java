@@ -203,7 +203,6 @@ public class GameController {
         SequentialTransition transition = new SequentialTransition(
                 labels[row][col],
                 bigger,
-                new PauseTransition(Duration.millis(250)),
                 smaller
                 );
         transition.play();
