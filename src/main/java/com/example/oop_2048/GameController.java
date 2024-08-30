@@ -324,7 +324,7 @@ public class GameController {
 
     /**
      * @param forced se TRUE genera un alert che informa dell'inizio di una nuova partita
-     *               se FALSE genera un alert che chiede se si vuole ri-iniziare una partita
+     *               se FALSE genera un alert che chiede se si vuole iniziare una partita
      * In entrambi i casi se il punteggio attuale è maggiore del punteggio massimo, aggiorna quest'ultimo
      */
     @FXML
