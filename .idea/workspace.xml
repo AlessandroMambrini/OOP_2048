@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="075e4650-0521-44d3-8172-b4f55bc83c6b" name="Changes" comment="Ho eliminato quell'orribile button che era nascosto sullo sfondo">
+    <list default="true" id="075e4650-0521-44d3-8172-b4f55bc83c6b" name="Changes" comment="Migliorato il codice sostituendo per ogni movivmento la sezione che esegue le somme che era composta da 2 cicli for con una sezione che ne comprende 1 solo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/oop_2048/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/oop_2048/GameController.java" afterDir="false" />
     </list>
@@ -107,7 +107,7 @@
       <workItem from="1725047063052" duration="41000" />
       <workItem from="1725047121780" duration="67000" />
       <workItem from="1725047199160" duration="972000" />
-      <workItem from="1725048258131" duration="4623000" />
+      <workItem from="1725048258131" duration="7346000" />
     </task>
     <task id="LOCAL-00001" summary="21:37 - 7/8/2024">
       <option name="closed" value="true" />
@@ -229,7 +229,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725049047007</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Migliorato il codice sostituendo per ogni movivmento la sezione che esegue le somme che era composta da 2 cicli for con una sezione che ne comprende 1 solo">
+      <option name="closed" value="true" />
+      <created>1725053660697</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1725053660697</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,6 +276,7 @@
     <MESSAGE value="17:54 24/08/2024" />
     <MESSAGE value="DALLA SARDEGNA, IL PROGETTO RISULTA TERMINATO" />
     <MESSAGE value="Ho eliminato quell'orribile button che era nascosto sullo sfondo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ho eliminato quell'orribile button che era nascosto sullo sfondo" />
+    <MESSAGE value="Migliorato il codice sostituendo per ogni movivmento la sezione che esegue le somme che era composta da 2 cicli for con una sezione che ne comprende 1 solo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Migliorato il codice sostituendo per ogni movivmento la sezione che esegue le somme che era composta da 2 cicli for con una sezione che ne comprende 1 solo" />
   </component>
 </project>

@@ -1,5 +1,6 @@
 package com.example.oop_2048;
 
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -7,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -173,6 +175,11 @@ public class GameController {
             add_number();
         }
     }
+
+    /**
+     * Ad ogni mossa viene aggiunto in una posizione libera un 2 o un 4
+     * ogni volta che viene aggiunto un numero una piccola animazione lo fa pulsare per renderlo più visibile
+     */
     private void add_number() {
         Random random = new Random();
         int row, col;
@@ -181,7 +188,27 @@ public class GameController {
             col = random.nextInt(0, NUM_COL);
         } while (!Objects.equals(labels[row][col].getText(), ""));
         labels[row][col].setText(random.nextInt(1,3) * 2 + "");
+        labels[row][col].isFocused();
+
+        ScaleTransition bigger = new ScaleTransition(Duration.millis(250));
+        bigger.setToX(1.15);
+        bigger.setToY(1.15);
+        bigger.setInterpolator(Interpolator.LINEAR);
+
+        ScaleTransition smaller = new ScaleTransition(Duration.millis(250));
+        smaller.setToX(1);
+        smaller.setToY(1);
+        smaller.setInterpolator(Interpolator.LINEAR);
+
+        SequentialTransition transition = new SequentialTransition(
+                labels[row][col],
+                bigger,
+                new PauseTransition(Duration.millis(250)),
+                smaller
+                );
+        transition.play();
     }
+
     private void movement_right() {
         for (int j = NUM_COL - 2; j >= 0; j--) {
             for (int i = NUM_COL - 1; i >= 0; i--) {
