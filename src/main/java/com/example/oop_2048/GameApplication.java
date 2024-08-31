@@ -15,6 +15,7 @@ public class GameApplication extends Application {
         Parent root = loader.load();
         GameController controller = loader.getController();
         Scene scene = new Scene(root);
+
         scene.setOnKeyPressed(controller::keyPressed);
         stage.setTitle("2048");
         stage.setScene(scene);
