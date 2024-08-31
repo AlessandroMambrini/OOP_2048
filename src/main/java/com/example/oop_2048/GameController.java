@@ -1,17 +1,24 @@
 package com.example.oop_2048;
 
+import javafx.animation.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
-public class GameController {
+import static java.lang.Integer.parseInt;
+import static javafx.scene.control.ButtonType.OK;
 
-    @FXML private static final Integer WIN = 2048;
+public class GameController {
+    @FXML private static final int WIN = 2048;
     @FXML private Label label00;
     @FXML private Label label33;
     @FXML private Label label01;
@@ -28,22 +35,64 @@ public class GameController {
     @FXML private Label label21;
     @FXML private Label label20;
     @FXML private Label label13;
-
     @FXML private Label current_score;
     @FXML private Label high_score;
     @FXML private final int NUM_COL = 4;
-
-    @FXML public Integer[][] grid = new Integer[NUM_COL][NUM_COL];
-
+    private Label[][] labels = new Label[NUM_COL][NUM_COL];
+    private final HashMap<Integer, Color> colors = new HashMap<>();
     @FXML
     public void initialize(){
         current_score.setText("0");
         high_score.setText("0");
-        for (int i = 0; i < NUM_COL; i++) {
-            Arrays.fill(grid[i],0);
-        }
+        labels = new Label[][]{ {label00, label01, label02, label03},
+                                {label10, label11, label12, label13},
+                                {label20, label21, label22, label23},
+                                {label30, label31, label32, label33}};
+        reset_grid();
+        load_colors();
         init_number();
     }
+
+    /**
+     * Inizializza ad ogni possibile valore di ogni Label un colore di sfondo
+     */
+    private void load_colors() {
+        colors.put(2, Color.rgb(238,199,107));
+        colors.put(4, Color.rgb(240,190,41));
+        colors.put(8, Color.rgb(192,152,43));
+        colors.put(16, Color.rgb(234,133,83));
+        colors.put(32, Color.rgb(228,104,40));
+        colors.put(64, Color.rgb(183,84,32));
+        colors.put(128, Color.rgb(229,74,80));
+        colors.put(256, Color.rgb(215,14,23));
+        colors.put(512, Color.rgb(172,25,23));
+        colors.put(1024, Color.rgb(83,0,112));
+        colors.put(2048, Color.rgb(40,1,52));
+    }
+    private void assign_colors() {
+        for (int i = 0; i < NUM_COL; i++) {
+            for (int j = 0; j < NUM_COL; j++) {
+                int value = 0;
+                if (!Objects.equals(labels[i][j].getText(), "")){
+                    value = Integer.parseInt(labels[i][j].getText());
+                }
+                labels[i][j].setBackground(Background.fill(colors.get(value)));
+            }
+        }
+    }
+    @FXML
+    private void reset_grid() {
+        for (int i = 0; i < NUM_COL; i++) {
+            for (int j = 0; j < NUM_COL; j++) {
+                labels[i][j].setText("");
+            }
+        }
+    }
+
+    /**
+     * Questo metodo inizializza 2 numeri che possono essere 2 e 4, entrambi 2 o entrambi 4
+     * in 2 posizioni diverse
+     */
     @FXML
     private void init_number() {
         Random random = new Random();
@@ -54,236 +103,258 @@ public class GameController {
             second_row = random.nextInt(0,NUM_COL);
             second_column = random.nextInt(0,NUM_COL);
         } while (first_row == second_row && first_colum == second_column);
-        grid[first_row][first_colum] = random.nextInt(1,3) * 2;
-        write_label(first_row, first_colum);
-        grid[second_row][second_column] = random.nextInt(1,3) * 2;
-        write_label(second_row, second_column);
+        labels[first_row][first_colum].setText(random.nextInt(1,3) * 2 + "");
+        labels[second_row][second_column].setText(random.nextInt(1,3) * 2 + "");
+        assign_colors();
     }
 
     @FXML
-    public Label grid_to_label (int row, int col){
-        int cell = row * NUM_COL + col;
-        return switch (cell){
-            case 0 -> label00;
-            case 1 -> label01;
-            case 2 -> label02;
-            case 3 -> label03;
-            case 4 -> label10;
-            case 5 -> label11;
-            case 6 -> label12;
-            case 7 -> label13;
-            case 8 -> label20;
-            case 9 -> label21;
-            case 10 -> label22;
-            case 11 -> label23;
-            case 12 -> label30;
-            case 13 -> label31;
-            case 14 -> label32;
-            case 15 -> label33;
-            default -> throw new IllegalStateException("Unexpected value: " + cell);
-        };
-    }
-
-    @FXML
-    private void  write_label(int row, int col){
-        int value = grid[row][col];
-        Label label = grid_to_label(row, col);
-        if (value == 0){
-            label.setText("");
-        } else {
-            String string = value + "";
-            label.setText(string);
-        }
-    }
-
-    @FXML
-    public void chosen_direction(KeyEvent keyEvent) {
+    void keyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()){
             case KeyCode.UP:
-                current_score.setText("Up");
                 movement_up();
                 break;
             case KeyCode.DOWN:
-                current_score.setText("Down");
                 movement_down();
                 break;
             case KeyCode.LEFT:
-                current_score.setText("Left");
                 movement_left();
                 break;
             case KeyCode.RIGHT:
-                current_score.setText("Right");
                 movement_right();
                 break;
+            case KeyCode.R:
+                start_a_new_game(false);
+            default:
+                return;
         }
         check_win_or_loss();
-        add_number();
+        assign_colors();
     }
 
+    /**
+     * Controlla che sia presente una cella con il valore 2048 e nel caso dichiara la vittoria
+     * e forza il riavvio di un'altra partita
+     * Se la partita non risulta vinta controlla anche che siano ancora possibili delle mosse
+     * in caso contratrio dichiara la sconfitta e forza il riavvio di un'altra partita
+     */
     private void check_win_or_loss() {
-        boolean win = false;
+        boolean is_a_zero = true, end = true;
         for (int i = 0; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
-                if (Objects.equals(grid[i][j], WIN)) {
-                    high_score.setText("WIN");
+                if (Objects.equals(labels[i][j].getText(), "")){
+                    is_a_zero = false;
+                } else if (Objects.equals(Integer.parseInt(labels[i][j].getText()), WIN)) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("YOU WON");
+                    alert.setHeaderText("Congratulations!!!");
+                    alert.setContentText("Please start a new game");
+                    alert.showAndWait();
+                    start_a_new_game(true);
                 }
             }
         }
+        if (is_a_zero){
+            for (int i = 1; i < NUM_COL - 1; i++) {
+                for (int j = 0; j < NUM_COL; j++) {
+                    if (Objects.equals(labels[i][j].getText(), labels[i - 1][j].getText()) || Objects.equals(labels[i][j].getText(), labels[i + 1][j].getText()) || Objects.equals(labels[j][i].getText(), labels[j][i - 1].getText()) || Objects.equals(labels[j][i].getText(), labels[j][i + 1].getText())) {
+                        end = false;
+                        break;
+                    }
+                }
+            }
+            if (end){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("YOU LOST");
+                alert.setHeaderText("No more moves are possible");
+                alert.setContentText("Please start a new game");
+                alert.showAndWait();
+                start_a_new_game(true);
+            }
+        } else {
+            add_number();
+        }
     }
 
+    /**
+     * Ad ogni mossa viene aggiunto in una posizione libera un 2 o un 4
+     * ogni volta che viene aggiunto un numero una piccola animazione lo fa pulsare per renderlo più visibile
+     */
     private void add_number() {
         Random random = new Random();
         int row, col;
         do {
             row = random.nextInt(0, NUM_COL);
             col = random.nextInt(0, NUM_COL);
-        } while (grid[row][col] != 0);
-        grid[row][col] = random.nextInt(1,3) * 2;
-        write_label(row, col);
+        } while (!Objects.equals(labels[row][col].getText(), ""));
+        labels[row][col].setText(random.nextInt(1,3) * 2 + "");
+        labels[row][col].isFocused();
+
+        ScaleTransition bigger = new ScaleTransition(Duration.millis(250));
+        bigger.setToX(1.15);
+        bigger.setToY(1.15);
+        bigger.setInterpolator(Interpolator.LINEAR);
+
+        ScaleTransition smaller = new ScaleTransition(Duration.millis(250));
+        smaller.setToX(1);
+        smaller.setToY(1);
+        smaller.setInterpolator(Interpolator.LINEAR);
+
+        SequentialTransition transition = new SequentialTransition(
+                labels[row][col],
+                bigger,
+                smaller
+                );
+        transition.play();
     }
 
     private void movement_right() {
         for (int j = NUM_COL - 2; j >= 0; j--) {
             for (int i = NUM_COL - 1; i >= 0; i--) {
                 int counter = 0;
-                for (int k = 1; k <= NUM_COL - 1 - j; k++) {
-                    if (grid[i][j + k] == 0){
-                        counter++;
+                if (!labels[i][j].getText().isEmpty()) {
+                    for (int k = 1; k <= NUM_COL - 1 - j; k++) {
+                        if (Objects.equals(labels[i][j + k].getText(), "")){
+                            counter++;
+                        }
+                    }
+                    if (counter > 0){
+                        labels[i][j + counter].setText(labels[i][j].getText());
+                        labels[i][j].setText("");
                     }
                 }
-                if (counter > 0){
-                    grid[i][j + counter] = grid[i][j];
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    write_label(i, j + counter);
-                }
-            }
-        }
-        for (int j = NUM_COL - 2; j >= 0; j--) {
-            for (int i = NUM_COL - 1; i >= 0; i--) {
-                if (Objects.equals(grid[i][j], grid[i][j + 1])) {
-                    grid[i][j + 1] *= 2;
-                    write_label(i, j + 1);
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    for (int k = j; k > 0 ; k--) {
-                        grid[i][k] = grid[i][k - 1];
-                        grid[i][k - 1] = 0;
-                        write_label(i, k);
+                for (int k = NUM_COL - 1; k > 0; k--) {
+                    if (k - counter - 1 <= 0){
+                        counter = 0;
                     }
-                    grid[i][0] = 0;
-                    write_label(i, 0);
+                    if (!labels[i][k].getText().isEmpty() && labels[i][k].getText().equals(labels[i][k - counter - 1].getText())){
+                        labels[i][k].setText(Integer.parseInt(labels[i][k - counter - 1].getText()) * 2 + "");
+                        update_current_score(Integer.parseInt(labels[i][k].getText()));
+                        labels[i][k - counter - 1].setText("");
+                    }
                 }
             }
         }
     }
-
     private void movement_left() {
         for (int j = 1; j < NUM_COL; j++) {
             for (int i = 0; i < NUM_COL; i++) {
                 int counter = 0;
-                for (int k = 1; k < j + 1; k++) {
-                    if (grid[i][j - k] == 0){
-                        counter++;
+                if (!labels[i][j].getText().isEmpty()) {
+                    for (int k = 1; k < j + 1; k++) {
+                        if (Objects.equals(labels[i][j - k].getText(), "")){
+                            counter++;
+                        }
+                    }
+                    if (counter > 0){
+                        labels[i][j - counter].setText(labels[i][j].getText());
+                        labels[i][j].setText("");
                     }
                 }
-                if (counter > 0){
-                    grid[i][j - counter] = grid[i][j];
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    write_label(i, j - counter);
-                }
-            }
-        }
-        for (int j = 1; j < NUM_COL; j++) {
-            for (int i = 0; i < NUM_COL; i++) {
-                if (Objects.equals(grid[i][j - 1], grid[i][j])){
-                    grid[i][j - 1] *= 2;
-                    write_label(i, j - 1);
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    for (int k = j; k < NUM_COL - 1; k++) {
-                        grid[i][k] = grid[i][k + 1];
-                        grid[i][k + 1] = 0;
-                        write_label(i, k);
+                for (int k = 0; k < NUM_COL - 1; k++) {
+                    if (k + counter + 1 >= 3)
+                        counter = 0;
+                    if (!labels[i][k].getText().isEmpty() && labels[i][k].getText().equals(labels[i][k + counter + 1].getText())){
+                        labels[i][k].setText(Integer.parseInt(labels[i][k + counter + 1].getText()) * 2 + "");
+                        update_current_score(Integer.parseInt(labels[i][k].getText()));
+                        labels[i][k + counter + 1].setText("");
                     }
-                    grid[i][NUM_COL - 1] = 0;
-                    write_label(i, NUM_COL - 1);
                 }
             }
         }
     }
-
     private void movement_down() {
         for (int i = NUM_COL - 2; i >= 0; i--) {
             for (int j = NUM_COL - 1; j >= 0; j--) {
                 int counter = 0;
-                for (int k = 1; k <= NUM_COL - 1 - i; k++) {
-                    if (grid[i + k][j] == 0){
-                        counter++;
+                if (!labels[i][j].getText().isEmpty()) {
+                    for (int k = 1; k <= NUM_COL - 1 - i; k++) {
+                        if (Objects.equals(labels[i + k][j].getText(), "")){
+                            counter++;
+                        }
+                    }
+                    if (counter > 0){
+                        labels[i + counter][j].setText(labels[i][j].getText());
+                        labels[i][j].setText("");
                     }
                 }
-                if (counter > 0){
-                    grid[i + counter][j] = grid[i][j];
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    write_label(i + counter, j);
-                }
-            }
-        }
-        for (int i = NUM_COL - 2; i >= 0; i--) {
-            for (int j = NUM_COL - 1; j >= 0; j--) {
-                if (Objects.equals(grid[i][j], grid[i + 1][j])) {
-                    grid[i + 1][j] *= 2;
-                    write_label(i + 1, j);
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    for (int k = i; k > 0 ; k--) {
-                        grid[k][j] = grid[k - 1][j];
-                        grid[k - 1][j] = 0;
-                        write_label(k, j);
+                for (int k = NUM_COL - 1; k > 0; k--) {
+                    if (k - counter - 1 <= 0){
+                        counter = 0;
                     }
-                    grid[0][j] = 0;
-                    write_label(0, j);
+                    if (!labels[k][j].getText().isEmpty() && labels[k][j].getText().equals(labels[k - counter - 1][j].getText())){
+                        labels[k][j].setText(Integer.parseInt(labels[k - counter - 1][j].getText()) * 2 + "");
+                        update_current_score(Integer.parseInt(labels[k][j].getText()));
+                        labels[k - counter - 1][j].setText("");
+                    }
                 }
             }
         }
     }
-
     @FXML
     private void movement_up() {
         for (int i = 1; i < NUM_COL; i++) {
             for (int j = 0; j < NUM_COL; j++) {
                 int counter = 0;
-                for (int k = 1; k < i + 1; k++) {
-                    if (grid[i - k][j] == 0){
-                        counter++;
+                if (!labels[i][j].getText().isEmpty()){
+                    for (int k = 1; k < i + 1; k++) {
+                        if (labels[i - k][j].getText().isEmpty()){
+                            counter++;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (counter > 0) {
+                        labels[i - counter][j].setText(labels[i][j].getText());
+                        labels[i][j].setText("");
                     }
                 }
-                if (counter > 0) {
-                    grid[i - counter][j] = grid[i][j];
-                    grid[i][j] = 0;
-                    write_label(i, j);
-                    write_label(i - counter, j);
+                for (int k = 0; k < NUM_COL - 1; k++) {
+                    if (k + counter + 1 >= 3)
+                        counter = 0;
+                    if (!labels[k][j].getText().isEmpty() && labels[k][j].getText().equals(labels[k + counter + 1][j].getText())){
+                        labels[k][j].setText(Integer.parseInt(labels[k + counter + 1][j].getText()) * 2 + "");
+                        update_current_score(Integer.parseInt(labels[k][j].getText()));
+                        labels[k + counter + 1][j].setText("");
+                    }
                 }
             }
         }
-        for (int i = 1; i < NUM_COL; i++) {
-            for (int j = 0; j < NUM_COL; j++) {
-                if (Objects.equals(grid[i - 1][j], grid[i][j])){
-                    grid[i - 1][j] *= 2;
-                    write_label(i - 1, j);
-                    grid[i][j] = 0;
-                    write_label(i,j);
-                    for (int k = i; k < NUM_COL - 1; k++) {
-                        grid[k][j] = grid[k + 1][j];
-                        grid[k + 1][j] = 0;
-                        write_label(k, j);
-                    }
-                    grid[NUM_COL - 1][j] = 0;
-                    write_label(NUM_COL - 1, j);
-                }
-            }
+    }
+
+    /**
+     * @param forced se TRUE genera un alert che informa dell'inizio di una nuova partita
+     *               se FALSE genera un alert che chiede se si vuole iniziare una partita
+     * In entrambi i casi se il punteggio attuale è maggiore del punteggio massimo, aggiorna quest'ultimo
+     */
+    @FXML
+    private void start_a_new_game(boolean forced) {
+        Alert alert;
+        if (forced){
+            alert = new Alert(Alert.AlertType.INFORMATION);
+        } else {
+            alert = new Alert(Alert.AlertType.CONFIRMATION);
         }
+        alert.setTitle("New game");
+        alert.setHeaderText("A new game will start");
+        alert.showAndWait().ifPresent(result -> {
+            if(result == OK){
+                if (parseInt(current_score.getText()) > parseInt(high_score.getText())){
+                    high_score.setText(current_score.getText());
+                }
+                current_score.setText("0");
+                reset_grid();
+                init_number();
+            }
+        });
+    }
+
+    /**
+     * @param points Sono il risultato di una somma eseguita,
+     *               ogni volta che viene eseguita una somma il risultato di essa viene aggiunto allo score
+     */
+    @FXML
+    private void update_current_score(int points){
+        current_score.setText(parseInt(current_score.getText()) + points + "");
     }
 }
