@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -39,7 +40,7 @@ public class GameController {
     @FXML private Label high_score;
     @FXML private final int NUM_COL = 4;
     private Label[][] labels = new Label[NUM_COL][NUM_COL];
-    private final HashMap<Integer, Color> colors = new HashMap<>();
+    private final Map<Integer, Color> colors = new HashMap<>();
     @FXML
     public void initialize(){
         current_score.setText("0");
