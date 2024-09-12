@@ -8,6 +8,12 @@ If two tiles of the same number collide while moving, they will merge into a til
 If all four spaces in a row or column are filled with tiles of the same value,\
 a move parallel to that row/column will combine all the tile
 
+## Changes from the original
+1) If all four spaces in a row or column are filled with tiles of the same value, a move parallel to that row/column will combine all the tile \
+   In the original version only the first 2 and the last 2 would combine.
+2) You can't keep going after reaching 2048, the game declare you the winner and the game is resetted. \
+   In the original you could keep playing after reaching a tile with the 2048 value
+
 ## Strategy
 The best strategy is keeping the largest in a corner with the other large tile filling the row / column,\
 you should try to not move the largest number from his corner.
